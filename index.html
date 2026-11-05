@@ -65,7 +65,8 @@
     const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
     const buf = new Uint8Array(await (await fetch("p/" + m[1] + ".bin", { cache: "no-store" })).arrayBuffer());
     const plain = new Uint8Array(await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12)));
-    let b = ""; plain.forEach(c => b += String.fromCharCode(c));
+    const det = JSON.parse(new TextDecoder().decode(plain)); det.u = m[1];
+    let b = ""; new TextEncoder().encode(JSON.stringify(det)).forEach(c => b += String.fromCharCode(c));
     location.replace(location.pathname + "#d=" + btoa(b).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""));
     location.reload();
   } catch (e) { document.documentElement.style.visibility = ""; alert("הקישור לא תקין — בקש קישור חדש"); }
@@ -158,9 +159,9 @@
 
   <div id="done">
     <h2 style="margin:0 -16px 12px">✔ הטופס נחתם</h2>
-    <p class="note">שלח את הטופס החתום חזרה בווצאפ. אם הכפתור לא עובד — לחץ "שמור תמונה" ושלח את הקובץ.</p>
+    <p class="note" id="intake">⏳ שולח את הטופס למערכת 4M-D…</p>
     <img id="result" alt="טופס חתום">
-    <button type="button" class="btn-main" id="share">שלח בווצאפ 📤</button>
+    <button type="button" class="btn-main" id="share">שלח עותק ליקיר בווצאפ 📤</button>
     <button type="button" class="btn-2" id="save">שמור תמונה</button>
     <button type="button" class="btn-2" id="edit" style="background:#e4e8ee;color:#111">חזרה לעריכה</button>
   </div>
@@ -452,6 +453,32 @@ function render(D) {
 }
 
 let blob = null, fname = "";
+
+// Direct intake: the signed form (image + data) is encrypted for the 4M-D system's key and dropped in its
+// private ntfy topic. Only the system can decrypt it; it updates the tracker by itself.
+const INTAKE = {"topic": "4md-yvnKfkB7K8T6piSlCx8SuU2R", "public_spki_b64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4NB385KPPk2pcCpuHqhFjoDHWoRRcvnqGK90HYAe7AsQDBA01uDW9fjsHuTmK+/7z2QpmKri+KLy1LFvKf9JtwPq+5gHsIAyu4kt37ul2D0qbGb8YjVXBcWHPP9JCeiCNE89dEKUQt2QBfAF9mWciWzZX/sug8h2LD9hTZSskyxuNQSV9mg3BsP88nd5za6LMbzSu+aDstY3CZr/zMBXqlU3Vnd/kJ7VtYDSJm9F229xrnb89MJC9B4UOEYEGA+myHRSpshjeVhS9TTmJ6BFidkKGYdxe6RPNBkiSRQ7A0KBQJQPmgGUBNh/ThQh0F6viJSklbBo16/fEtGTaCsjhwIDAQAB"};
+const b64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+async function submitIntake(pngBlob, data) {
+  const st = $("intake");
+  try {
+    const png = new Uint8Array(await pngBlob.arrayBuffer());
+    const body = new TextEncoder().encode(JSON.stringify({ v: 1, u: PRE && PRE.u, form: $("formNo").textContent,
+      data: { ...data, items: data.items }, logiSigned: !pads.padLog.empty, png: b64(png) }));
+    const spki = Uint8Array.from(atob(INTAKE.public_spki_b64), c => c.charCodeAt(0));
+    const pub = await crypto.subtle.importKey("spki", spki, { name: "RSA-OAEP", hash: "SHA-256" }, false, ["encrypt"]);
+    const key = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, body));
+    const wrapped = new Uint8Array(await crypto.subtle.encrypt({ name: "RSA-OAEP" }, pub, await crypto.subtle.exportKey("raw", key)));
+    const env = new Uint8Array(wrapped.length + iv.length + ct.length);
+    env.set(wrapped); env.set(iv, wrapped.length); env.set(ct, wrapped.length + iv.length);
+    const r = await fetch("https://ntfy.sh/" + INTAKE.topic, { method: "PUT", body: env, headers: { "Filename": "form.bin" } });
+    if (!r.ok) throw new Error(r.status);
+    st.innerHTML = "✅ <b>הטופס נקלט במערכת 4M-D.</b> אפשר לסגור את הדף. (אם תרצה — שלח גם עותק ליקיר)";
+  } catch (e) {
+    st.innerHTML = "⚠️ השליחה למערכת לא הצליחה. לחץ <b>\"שלח עותק ליקיר בווצאפ\"</b> כדי שהטופס יגיע בכל זאת.";
+  }
+}
 $("f").addEventListener("submit", e => {
   e.preventDefault();
   const { errs, data } = collect();
@@ -467,6 +494,7 @@ $("f").addEventListener("submit", e => {
   c.toBlob(b => {
     blob = b; $("result").src = URL.createObjectURL(b);
     $("f").style.display = "none"; $("done").style.display = "block"; window.scrollTo(0, 0);
+    submitIntake(b, data);
   }, "image/png");
 });
 $("share").addEventListener("click", async () => {
