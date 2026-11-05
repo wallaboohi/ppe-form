@@ -290,7 +290,7 @@ if (PRE) {
   if (PRE.k) loadLogiSig(PRE.k);
   $("name").value = PRE.n; $("name").dispatchEvent(new Event("change"));
   $("name").disabled = true;                       // the form belongs to this employee
-  $("forWrap").style.display = ""; $("forName").textContent = PRE.n;
+  $("forWrap").style.display = ""; $("forName").textContent = "בר נוי · מנהל רכש";  // per Yakir 05.11.26
   if (PRE.r) $("role").value = PRE.r;
   if (PRE.team) $("team").value = PRE.team;
   if (PRE.phone) $("phone").value = PRE.phone;
