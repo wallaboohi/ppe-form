@@ -53,6 +53,23 @@
   footer { background:var(--navy); color:#9fb0c3; text-align:center; font-size:12px; padding:10px; }
   @media print { body * { visibility:hidden; } #result, #result * { visibility:visible; } #result { position:absolute; inset:0; width:100%; } }
 </style>
+<script>
+// short personal link #u=<id>.<key>: fetch p/<id>.bin, decrypt, then reopen as #d=<details>
+(async () => {
+  const m = location.hash.match(/[#&]u=([\w-]+)\.([\w-]+)/);
+  if (!m) return;
+  document.documentElement.style.visibility = "hidden";
+  try {
+    const raw = Uint8Array.from(atob(m[2].replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0));
+    const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    const buf = new Uint8Array(await (await fetch("p/" + m[1] + ".bin", { cache: "no-store" })).arrayBuffer());
+    const plain = new Uint8Array(await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12)));
+    let b = ""; plain.forEach(c => b += String.fromCharCode(c));
+    location.replace(location.pathname + "#d=" + btoa(b).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""));
+    location.reload();
+  } catch (e) { document.documentElement.style.visibility = ""; alert("הקישור לא תקין — בקש קישור חדש"); }
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
