@@ -299,7 +299,7 @@ if (PRE) {
     const on = PRE.items.includes(i); d.querySelector(".got").checked = on; d.classList.toggle("off", !on);
   });
   if (PRE.suit) box.querySelector('[data-i="1"] .size').value = PRE.suit;
-  if (PRE.sz) for (const [i, v] of Object.entries(PRE.sz)) box.querySelector().value = v;
+  if (PRE.sz) for (const [i, v] of Object.entries(PRE.sz)) box.querySelector('[data-i="' + i + '"] .size').value = v;
   $("recvDate").previousElementSibling.innerHTML = 'תאריך קבלה <span class="req">*</span> <span class="note">(למלא ביום שקיבלת את הציוד)</span>';
 }
 document.querySelectorAll("[data-clear]").forEach(b => b.addEventListener("click", () => pads[b.dataset.clear].clear()));
