@@ -265,8 +265,29 @@ function setupPad(id) {
 }
 setupPad("padEmp"); setupPad("padLog");
 
+// logistics signature: stored encrypted on the site (sig.bin); the key only travels in personal links
+async function loadLogiSig(k) {
+  try {
+    const raw = Uint8Array.from(atob(k.replace(/-/g, "+").replace(/_/g, "/")), ch => ch.charCodeAt(0));
+    const key = await crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    const buf = new Uint8Array(await (await fetch("sig.bin", { cache: "no-store" })).arrayBuffer());
+    const png = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(0, 12) }, key, buf.slice(12));
+    const im = new Image();
+    im.onload = () => {
+      const p = pads.padLog, r = p.c.getBoundingClientRect(), sc = Math.min((r.width - 20) / im.width, (r.height - 20) / im.height);
+      p.ctx.drawImage(im, (r.width - im.width * sc) / 2, (r.height - im.height * sc) / 2, im.width * sc, im.height * sc);
+      p.empty = false; p.locked = true;
+      p.c.style.pointerEvents = "none"; p.c.style.borderStyle = "solid";
+      document.querySelector('[data-clear="padLog"]').style.display = "none";
+      p.c.previousElementSibling.innerHTML = "חתימת האחראי הלוגיסטי <span class=\"note\">(נחתם מראש ✔)</span>";
+    };
+    im.src = URL.createObjectURL(new Blob([png], { type: "image/png" }));
+  } catch (e) { /* no signature: the officer can sign on the pad */ }
+}
+
 if (PRE) {
   if (PRE.logi) $("logi").value = PRE.logi;
+  if (PRE.k) loadLogiSig(PRE.k);
   $("name").value = PRE.n; $("name").dispatchEvent(new Event("change"));
   $("name").disabled = true;                       // the form belongs to this employee
   $("forWrap").style.display = ""; $("forName").textContent = PRE.n;
