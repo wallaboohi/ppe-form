@@ -23,7 +23,7 @@
 <script>
 const c = document.getElementById("c"), x = c.getContext("2d"); let on = false, last = null, empty = true;
 function size() { const r = c.getBoundingClientRect(), d = devicePixelRatio || 1; c.width = r.width * d; c.height = r.height * d;
-  x.setTransform(d, 0, 0, d, 0, 0); x.lineWidth = 3; x.lineCap = x.lineJoin = "round"; x.strokeStyle = "#0b2a6b"; }
+  x.setTransform(d, 0, 0, d, 0, 0); x.lineWidth = 3; x.lineCap = x.lineJoin = "round"; x.strokeStyle = "#000"; }
 size();
 const pos = e => { const r = c.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
 c.onpointerdown = e => { on = true; last = pos(e); c.setPointerCapture(e.pointerId); };
