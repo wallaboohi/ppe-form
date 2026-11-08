@@ -199,6 +199,7 @@ function fromHash() {
 }
 const PRE = null || fromHash();  // known details of a specific employee (null = blank form)
 if (!PRE) $("recvDate").value = iso(now);
+else if (PRE.recv) $("recvDate").value = PRE.recv;  // re-sign: the date on the original paper form
 $("recvDate").max = iso(now);
 
 function fill(sel, list, first) {
