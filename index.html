@@ -430,7 +430,7 @@ function render(D) {
   bar(y + 16, 44, "אישור החזרת ציוד  (למילוי בסיום העסקה / בעת ההחזרה)"); y += 60;
   y = grid(y, [300, 520, R - M - 820], [[{ t: "תאריך החזרה", ...H1 }, { t: "הערות / חוסרים ונזקים", ...H1 }, { t: "חתימת האחראי הלוגיסטי", ...H1 }], ["", "", ""]], [40, 70]);
   // data QR: WhatsApp turns images into JPEG and drops metadata, but a QR survives, so the agent can read the form back
-  if (window.qrcode) {
+  if (window.qrcode && !(PRE && PRE.noIntake)) {  // no data QR on a private (non-4M) form: the agent must not auto-record it
     const payload = { v: 1, f: $("formNo").textContent, n: D.name, tz: D.tz, d: D.recv,
       i: D.items.map(i => [i.n, i.size, i.cond, i.serial].filter((v, k) => k < 3 || v)), l: pads.padLog.empty ? 0 : 1, s: stamp };
     const b = new TextEncoder().encode(JSON.stringify(payload));
@@ -461,6 +461,7 @@ const INTAKE = {"topic": "4md-yvnKfkB7K8T6piSlCx8SuU2R", "public_spki_b64": "MII
 const b64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
 async function submitIntake(pngBlob, data) {
   const st = $("intake");
+  if (PRE && PRE.noIntake) { st.innerHTML = "הטופס <b>לא נשלח למערכת</b> ולא נשמר במאגר. לחץ <b>\"שלח עותק ליקיר בווצאפ\"</b> כדי להעביר אותו."; return; }
   try {
     const png = new Uint8Array(await pngBlob.arrayBuffer());
     const body = new TextEncoder().encode(JSON.stringify({ v: 1, u: PRE && PRE.u, form: $("formNo").textContent,
