@@ -111,16 +111,14 @@
       <div class="pad-tools"><span>חתום עם האצבע בתוך המסגרת</span><button type="button" class="btn-clear" data-clear="padCo">נקה</button></div>
     </section>
 
-    <section><div class="summary" id="summary"></div><button type="submit" class="btn-main">חתום ושמור במנגנון קבלת החדר ✍️</button></section>
+    <section><div class="summary" id="summary"></div><button type="submit" class="btn-main">חתום והמשך לשמירה ✍️</button></section>
   </form>
 
   <div id="done">
-    <h2 style="margin:0 -16px 12px">✔ החלוקה נשמרה</h2>
-    <p class="note" id="intake"></p>
+    <h2 style="margin:0 -16px 12px">✔ החלוקה נחתמה</h2>
     <img id="result" alt="חלוקת חדרים חתומה">
-    <button type="button" class="btn-main" id="share">שמור ושלח בווצאפ 📤</button>
-    <button type="button" class="btn-2" id="openchat" style="display:none">פתח את הצ'אט ב-WhatsApp</button>
-    <button type="button" class="btn-2" id="save">שמור תמונה</button>
+    <button type="button" class="btn-main" id="save">שמור במנגנון קבלת החדר של מקטע D 💾</button>
+    <p class="note" id="intake">הטופס עוד לא נשמר. בדוק אותו ולחץ <b>"שמור במנגנון קבלת החדר של מקטע D"</b>.</p>
     <button type="button" class="btn-2" id="edit" style="background:#e4e8ee;color:#111">חזרה לעריכה</button>
   </div>
   <footer>לשימוש פנימי בלבד &nbsp;|&nbsp; <bdi>גדר מזרחית - מקטע D</bdi> &nbsp;|&nbsp; <bdi>4M Defense Ltd.</bdi></footer>
@@ -210,7 +208,7 @@ function sheet(title, formNo) {
 const ROOM_INTAKE = {"topic": "4md-room-M2dEhIuE9gaIwzVQMGUyKZ55", "public_spki_b64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4NB385KPPk2pcCpuHqhFjoDHWoRRcvnqGK90HYAe7AsQDBA01uDW9fjsHuTmK+/7z2QpmKri+KLy1LFvKf9JtwPq+5gHsIAyu4kt37ul2D0qbGb8YjVXBcWHPP9JCeiCNE89dEKUQt2QBfAF9mWciWzZX/sug8h2LD9hTZSskyxuNQSV9mg3BsP88nd5za6LMbzSu+aDstY3CZr/zMBXqlU3Vnd/kJ7VtYDSJm9F229xrnb89MJC9B4UOEYEGA+myHRSpshjeVhS9TTmJ6BFidkKGYdxe6RPNBkiSRQ7A0KBQJQPmgGUBNh/ThQh0F6viJSklbBo16/fEtGTaCsjhwIDAQAB"};
 const b64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
 async function submitRoom(kind, pngBlob, data, form, okText) {
-  const st = $("intake"); st.innerHTML = "⏳ שומר במנגנון קבלת החדר…";
+  const st = $("intake"); st.innerHTML = "⏳ שומר במנגנון קבלת החדר של מקטע D…";
   try {
     const body = new TextEncoder().encode(JSON.stringify({ v: 1, kind, form, data, png: b64(new Uint8Array(await pngBlob.arrayBuffer())) }));
     const spki = Uint8Array.from(atob(ROOM_INTAKE.public_spki_b64), c => c.charCodeAt(0));
@@ -223,34 +221,30 @@ async function submitRoom(kind, pngBlob, data, form, okText) {
     env.set(wrapped); env.set(iv, wrapped.length); env.set(ct, wrapped.length + iv.length);
     const r = await fetch("https://ntfy.sh/" + ROOM_INTAKE.topic, { method: "PUT", body: env, headers: { "Filename": "room.bin" } });
     if (!r.ok) throw new Error(r.status);
-    st.innerHTML = okText;
+    st.innerHTML = okText; return true;
   } catch (e) {
-    st.innerHTML = "⚠️ השמירה במנגנון לא הצליחה. לחץ <b>\"שמור ושלח\"</b> כדי שהטופס יגיע בכל זאת.";
+    st.innerHTML = "⚠️ השמירה במנגנון לא הצליחה. בדוק שיש חיבור לאינטרנט ולחץ שוב על <b>\"שמור במנגנון קבלת החדר של מקטע D\"</b>.";
+    return false;
   }
 }
 
-// the "done" screen: send the signed image on WhatsApp (to=<phone>, tn=<name> from the link; else the share sheet)
-let blob = null, fname = "";
-function wireDone(PRE, caption) {
-  const DEST = PRE && PRE.to ? { to: String(PRE.to).replace(/\D/g, ""), name: PRE.tn || "הרכז" } : null;
-  const dl = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = fname; a.click(); };
-  const openChat = () => { dl(); setTimeout(() => { location.href = "https://wa.me/" + DEST.to + "?text=" + encodeURIComponent(caption + " (" + fname + ")"); }, 600); };
-  if (DEST) {
-    $("share").textContent = "שמור ושלח ל" + DEST.name + " בווצאפ 📤";
-    $("openchat").style.display = ""; $("openchat").textContent = "שמור ופתח את הצ'אט עם " + DEST.name;
-    $("openchat").addEventListener("click", openChat);
-  }
-  $("share").addEventListener("click", async () => {
-    const file = new File([blob], fname, { type: "image/png" });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: fname, text: caption }); } catch (e) {} }
-    else if (DEST) openChat(); else dl();
+// the "done" screen (owner 23.11 09:42): the only way out is "שמור במנגנון קבלת החדר של מקטע D" — no WhatsApp, no sending
+// to anyone, no image download. Once saved the form is locked, so the same form is not saved twice.
+let pending = null, fname = "";
+function wireDone() {
+  $("save").addEventListener("click", async () => {
+    if (!pending || $("save").disabled) return;
+    $("save").disabled = true; $("edit").style.display = "none";
+    if (await submitRoom(...pending)) { $("save").textContent = "✅ נשמר במנגנון קבלת החדר של מקטע D"; pending = null; }
+    else { $("save").disabled = false; $("edit").style.display = ""; }
   });
-  $("save").addEventListener("click", dl);
   $("edit").addEventListener("click", () => { $("done").style.display = "none"; $("f").style.display = "block"; });
 }
 function showResult(c, kind, data, form, okText) {
-  c.toBlob(b => { blob = b; $("result").src = URL.createObjectURL(b); $("f").style.display = "none"; $("done").style.display = "block"; window.scrollTo(0, 0);
-    submitRoom(kind, b, data, form, okText); }, "image/png");
+  c.toBlob(b => { pending = [kind, b, data, form, okText]; $("result").src = URL.createObjectURL(b);
+    $("save").disabled = false; $("save").textContent = "שמור במנגנון קבלת החדר של מקטע D 💾"; $("edit").style.display = "";
+    $("intake").innerHTML = "הטופס עוד לא נשמר. בדוק אותו ולחץ <b>\"שמור במנגנון קבלת החדר של מקטע D\"</b>.";
+    $("f").style.display = "none"; $("done").style.display = "block"; window.scrollTo(0, 0); }, "image/png");
 }
 function errors(errs) {
   const s = $("summary");
@@ -261,7 +255,7 @@ function errors(errs) {
 
 const DECL = [
   "החדרים והאחראים שרשמתי הם החלוקה לשבוע הלינה שלמעלה.",
-  "כל אחראי חדר יקבל טופס משלו, יבחר מי ישן איתו ויחתום על קבלת החדר ועל כללי הלינה.",
+  "כל אחראי חדר יקבל טופס משלו, יבדוק את החדר בכניסה (כולל תקינות התריסים), יבחר מי ישן איתו ויחתום על קבלת החדר ועל כללי הלינה.",
   "החדר יימסר רק אחרי שהאחראי וכל הלנים שרשם חתמו, ואקבל על כך אישור.",
 ];
 const FORM = `RC-${String(now.getFullYear()).slice(2)}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}-${pad2(now.getHours())}${pad2(now.getMinutes())}`;
@@ -340,7 +334,7 @@ $("f").addEventListener("submit", e => {
   fname = `חלוקת חדרים - ${data.week} - רכז ${data.coord} - ${heb(new Date()).replace(/\//g, ".")}.png`.replace(/\//g, ".");
   showResult(render(data), "coord", data, FORM, `✅ <b>החלוקה נשמרה במנגנון קבלת החדר.</b> ${data.rooms.map(r => r.mgr).join(", ")} יקבלו עכשיו טופס אחראי חדר.`);
 });
-wireDone(PRE, "מצורפת חלוקת חדרים חתומה · רכז הלינה");
+wireDone();
 </script>
 </body>
 </html>

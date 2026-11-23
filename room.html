@@ -109,6 +109,14 @@
 
     <section>
       <h2>מצב החדר בקבלה</h2>
+      <div class="decl" style="background:#fff4e5;border:2px solid #e8a33d">
+        <p><b>⚠️ קבלת החדר בכניסה:</b> בודקים את החדר <b>מיד כשנכנסים</b>, לפני שמכניסים ציוד ולפני הלינה הראשונה, ורושמים כל ליקוי. ליקוי שלא נרשם עכשיו ייחשב כנזק שנגרם אחרי הקבלה.</p>
+        <p><b>🪟 תקינות התריסים:</b> בודקים כל תריס בחדר — נפתח, נסגר עד הסוף וננעל, בלי רצועה קרועה או שלב שבור.</p>
+      </div>
+      <div class="grid">
+        <div><label for="shut">תקינות התריסים <span class="req">*</span></label><select id="shut"><option value="">— בחר —</option><option>כל התריסים תקינים</option><option>יש תריס לא תקין</option></select></div>
+        <div><label for="shutNote">איזה תריס ומה הבעיה</label><input id="shutNote" placeholder="רק אם יש תריס לא תקין"></div>
+      </div>
       <div class="grid">
         <div><label for="fix">תקינות החדר והציוד <span class="req">*</span></label><select id="fix"><option value="">— בחר —</option><option>הכל תקין</option><option>יש תקלות / ליקויים</option></select></div>
         <div><label for="clean">ניקיון <span class="req">*</span></label><select id="clean"><option value="">— בחר —</option><option>נקי ומסודר</option><option>לא נקי / לא מסודר</option></select></div>
@@ -119,6 +127,7 @@
       </div>
       <label for="notes">הערות למצב החדר</label>
       <textarea id="notes" rows="2" placeholder="לא חובה"></textarea>
+      <label class="check"><input type="checkbox" id="entry"> בדקתי את החדר בכניסה, כולל כל התריסים, ורשמתי כאן כל ליקוי שמצאתי <span class="req">*</span></label>
     </section>
 
     <section>
@@ -138,16 +147,14 @@
       <div class="pad-tools"><span>חתום עם האצבע בתוך המסגרת</span><button type="button" class="btn-clear" data-clear="padEmp">נקה</button></div>
     </section>
 
-    <section><div class="summary" id="summary"></div><button type="submit" class="btn-main">חתום ושמור במנגנון קבלת החדר ✍️</button></section>
+    <section><div class="summary" id="summary"></div><button type="submit" class="btn-main">חתום והמשך לשמירה ✍️</button></section>
   </form>
 
   <div id="done">
     <h2 style="margin:0 -16px 12px">✔ הטופס נחתם</h2>
-    <p class="note" id="intake"></p>
     <img id="result" alt="טופס חתום">
-    <button type="button" class="btn-main" id="share">שמור ושלח בווצאפ 📤</button>
-    <button type="button" class="btn-2" id="openchat" style="display:none">פתח את הצ'אט ב-WhatsApp</button>
-    <button type="button" class="btn-2" id="save">שמור תמונה</button>
+    <button type="button" class="btn-main" id="save">שמור במנגנון קבלת החדר של מקטע D 💾</button>
+    <p class="note" id="intake">הטופס עוד לא נשמר. בדוק אותו ולחץ <b>"שמור במנגנון קבלת החדר של מקטע D"</b>.</p>
     <button type="button" class="btn-2" id="edit" style="background:#e4e8ee;color:#111">חזרה לעריכה</button>
   </div>
   <footer>לשימוש פנימי בלבד &nbsp;|&nbsp; <bdi>גדר מזרחית - מקטע D</bdi> &nbsp;|&nbsp; <bdi>4M Defense Ltd.</bdi></footer>
@@ -237,7 +244,7 @@ function sheet(title, formNo) {
 const ROOM_INTAKE = {"topic": "4md-room-M2dEhIuE9gaIwzVQMGUyKZ55", "public_spki_b64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4NB385KPPk2pcCpuHqhFjoDHWoRRcvnqGK90HYAe7AsQDBA01uDW9fjsHuTmK+/7z2QpmKri+KLy1LFvKf9JtwPq+5gHsIAyu4kt37ul2D0qbGb8YjVXBcWHPP9JCeiCNE89dEKUQt2QBfAF9mWciWzZX/sug8h2LD9hTZSskyxuNQSV9mg3BsP88nd5za6LMbzSu+aDstY3CZr/zMBXqlU3Vnd/kJ7VtYDSJm9F229xrnb89MJC9B4UOEYEGA+myHRSpshjeVhS9TTmJ6BFidkKGYdxe6RPNBkiSRQ7A0KBQJQPmgGUBNh/ThQh0F6viJSklbBo16/fEtGTaCsjhwIDAQAB"};
 const b64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
 async function submitRoom(kind, pngBlob, data, form, okText) {
-  const st = $("intake"); st.innerHTML = "⏳ שומר במנגנון קבלת החדר…";
+  const st = $("intake"); st.innerHTML = "⏳ שומר במנגנון קבלת החדר של מקטע D…";
   try {
     const body = new TextEncoder().encode(JSON.stringify({ v: 1, kind, form, data, png: b64(new Uint8Array(await pngBlob.arrayBuffer())) }));
     const spki = Uint8Array.from(atob(ROOM_INTAKE.public_spki_b64), c => c.charCodeAt(0));
@@ -250,34 +257,30 @@ async function submitRoom(kind, pngBlob, data, form, okText) {
     env.set(wrapped); env.set(iv, wrapped.length); env.set(ct, wrapped.length + iv.length);
     const r = await fetch("https://ntfy.sh/" + ROOM_INTAKE.topic, { method: "PUT", body: env, headers: { "Filename": "room.bin" } });
     if (!r.ok) throw new Error(r.status);
-    st.innerHTML = okText;
+    st.innerHTML = okText; return true;
   } catch (e) {
-    st.innerHTML = "⚠️ השמירה במנגנון לא הצליחה. לחץ <b>\"שמור ושלח\"</b> כדי שהטופס יגיע בכל זאת.";
+    st.innerHTML = "⚠️ השמירה במנגנון לא הצליחה. בדוק שיש חיבור לאינטרנט ולחץ שוב על <b>\"שמור במנגנון קבלת החדר של מקטע D\"</b>.";
+    return false;
   }
 }
 
-// the "done" screen: send the signed image on WhatsApp (to=<phone>, tn=<name> from the link; else the share sheet)
-let blob = null, fname = "";
-function wireDone(PRE, caption) {
-  const DEST = PRE && PRE.to ? { to: String(PRE.to).replace(/\D/g, ""), name: PRE.tn || "הרכז" } : null;
-  const dl = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = fname; a.click(); };
-  const openChat = () => { dl(); setTimeout(() => { location.href = "https://wa.me/" + DEST.to + "?text=" + encodeURIComponent(caption + " (" + fname + ")"); }, 600); };
-  if (DEST) {
-    $("share").textContent = "שמור ושלח ל" + DEST.name + " בווצאפ 📤";
-    $("openchat").style.display = ""; $("openchat").textContent = "שמור ופתח את הצ'אט עם " + DEST.name;
-    $("openchat").addEventListener("click", openChat);
-  }
-  $("share").addEventListener("click", async () => {
-    const file = new File([blob], fname, { type: "image/png" });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: fname, text: caption }); } catch (e) {} }
-    else if (DEST) openChat(); else dl();
+// the "done" screen (owner 23.11 09:42): the only way out is "שמור במנגנון קבלת החדר של מקטע D" — no WhatsApp, no sending
+// to anyone, no image download. Once saved the form is locked, so the same form is not saved twice.
+let pending = null, fname = "";
+function wireDone() {
+  $("save").addEventListener("click", async () => {
+    if (!pending || $("save").disabled) return;
+    $("save").disabled = true; $("edit").style.display = "none";
+    if (await submitRoom(...pending)) { $("save").textContent = "✅ נשמר במנגנון קבלת החדר של מקטע D"; pending = null; }
+    else { $("save").disabled = false; $("edit").style.display = ""; }
   });
-  $("save").addEventListener("click", dl);
   $("edit").addEventListener("click", () => { $("done").style.display = "none"; $("f").style.display = "block"; });
 }
 function showResult(c, kind, data, form, okText) {
-  c.toBlob(b => { blob = b; $("result").src = URL.createObjectURL(b); $("f").style.display = "none"; $("done").style.display = "block"; window.scrollTo(0, 0);
-    submitRoom(kind, b, data, form, okText); }, "image/png");
+  c.toBlob(b => { pending = [kind, b, data, form, okText]; $("result").src = URL.createObjectURL(b);
+    $("save").disabled = false; $("save").textContent = "שמור במנגנון קבלת החדר של מקטע D 💾"; $("edit").style.display = "";
+    $("intake").innerHTML = "הטופס עוד לא נשמר. בדוק אותו ולחץ <b>\"שמור במנגנון קבלת החדר של מקטע D\"</b>.";
+    $("f").style.display = "none"; $("done").style.display = "block"; window.scrollTo(0, 0); }, "image/png");
 }
 function errors(errs) {
   const s = $("summary");
@@ -286,10 +289,10 @@ function errors(errs) {
   (document.querySelector(".invalid") || s).scrollIntoView({ behavior: "smooth", block: "center" }); return true;
 }
 
-const CHECK = ["דלת, מנעול ומפתח", "חלונות ותריסים", "מיטות ומזרנים", "מצעים, שמיכות וכריות", "ארונות / לוקרים",
+const CHECK = ["דלת, מנעול ומפתח", "חלונות וזגגות", "מיטות ומזרנים", "מצעים, שמיכות וכריות", "ארונות / לוקרים",
   "מזגן / חימום", "תאורה, שקעים ומפסקים", "שירותים ומקלחת", "מים חמים", "ציוד בטיחות (גלאי עשן / מטף)"];
 const DECL = [
-  "קיבלתי את החדר במצב שרשמתי בטופס, יחד עם הלנים שציינתי.",
+  "קיבלתי את החדר בכניסה ובדקתי אותו לפני שהכנסתי ציוד, כולל תקינות כל התריסים. מצבו רשום בטופס, יחד עם הלנים שציינתי.",
   "אני האחראי על החדר מול החברה: אני דואג שכללי הלינה נשמרים ומדווח לרכז על כל תקלה, נזק או שינוי בלנים.",
   "רשמתי בטופס את כל מי שישן איתי בחדר, ורק אותם. כל אחד מהם יחתום על טופס משלו.",
   "ביציאה נחזיר את החדר במצב זהה לקבלה: נקי, מסודר, עם כל הציוד שלם וכל המפתחות.",
@@ -317,6 +320,8 @@ CHECK.forEach((nm, i) => {
   bd.addEventListener("change", () => { cn.style.display = bd.checked ? "" : "none"; });
   box.appendChild(d); ROWS.push({ nm, bd, cn });
 });
+$("shut").addEventListener("change", () => { $("shutNote").closest("div").style.display = $("shut").value === "יש תריס לא תקין" ? "" : "none"; });
+$("shutNote").closest("div").style.display = "none";
 $("fix").addEventListener("change", () => { $("faults").style.display = $("fix").value === "יש תקלות / ליקויים" ? "" : "none"; });
 $("tz").addEventListener("input", e => e.target.value = e.target.value.replace(/\D/g, "").slice(0, 9)); phoneFmt($("phone"));
 setupPad("padEmp");
@@ -347,15 +352,17 @@ function collect() {
     else occ.push(s.value);
   });
   if (!occ.length && !$("alone").checked) errs.push(bad($("addOcc")) && "מי ישן איתך (או סמן שאתה לבד)");
-  for (const [id, t] of [["fix", "תקינות החדר"], ["clean", "ניקיון"]]) if (!$(id).value) errs.push(bad($(id)) && t);
+  for (const [id, t] of [["shut", "תקינות התריסים"], ["fix", "תקינות החדר"], ["clean", "ניקיון"]]) if (!$(id).value) errs.push(bad($(id)) && t);
   const faults = $("fix").value === "יש תקלות / ליקויים" ? ROWS.filter(r => r.bd.checked).map(r => {
     if (!r.cn.value.trim()) errs.push(bad(r.cn) && `הערה – ${r.nm}`); return { nm: r.nm, cn: r.cn.value.trim() }; }) : [];
   if ($("fix").value === "יש תקלות / ליקויים" && !faults.length && !$("notes").value.trim()) errs.push(bad($("notes")) && "פירוט התקלות");
   if ($("clean").value !== "נקי ומסודר" && $("clean").value && !$("notes").value.trim()) errs.push(bad($("notes")) && "פירוט מצב הניקיון");
+  if ($("shut").value === "יש תריס לא תקין" && !$("shutNote").value.trim()) errs.push(bad($("shutNote")) && "איזה תריס לא תקין");
+  if (!$("entry").checked) errs.push(bad($("entry")) && "אישור בדיקת החדר בכניסה");
   if (!$("agree").checked) errs.push(bad($("agree")) && "אישור הכללים והאחריות");
   if (pads.padEmp.empty) errs.push(bad(pads.padEmp.c) && "חתימה");
   return { errs, data: { rid: PRE.rid || "", site: PRE.site, room: PRE.room, loc: PRE.loc, week: PRE.week, coord: PRE.coord, name: PRE.mgr,
-    tz: $("tz").value, phone: $("phone").value, occ, fix: $("fix").value, clean: $("clean").value, faults, notes: $("notes").value.trim(), test: !!PRE.test } };
+    tz: $("tz").value, phone: $("phone").value, occ, shutters: $("shut").value, shutters_note: $("shutNote").value.trim(), entry_checked: $("entry").checked, fix: $("fix").value, clean: $("clean").value, faults, notes: $("notes").value.trim(), test: !!PRE.test } };
 }
 
 function render(D) {
@@ -373,9 +380,10 @@ function render(D) {
   sig(pads.padEmp, M + pc[4] / 2, py0 + 41, pc[4] - 20, 60);
   T(`טלפון אחראי החדר: ${D.phone}  ·  רכז: ${D.coord}`, R - 6, y + 18, { s: 17, c: "#556" }); y += 34;
   y = bar(y + 8, "מצב החדר בקבלה");
-  const ok = v => v === "הכל תקין" || v === "נקי ומסודר";
-  y = grid(y, [280, R - M - 280], [[{ t: "תקינות החדר והציוד", ...H1, al: "r" }, { t: D.fix, b: 1, c: ok(D.fix) ? "#1e7b34" : "#c62828" }],
-    [{ t: "ניקיון", ...H1, al: "r" }, { t: D.clean, b: 1, c: ok(D.clean) ? "#1e7b34" : "#c62828" }]], [40, 40]);
+  const ok = v => v === "הכל תקין" || v === "נקי ומסודר" || v === "כל התריסים תקינים";
+  y = grid(y, [280, R - M - 280], [[{ t: "נבדק בכניסה", ...H1, al: "r" }, { t: "✔ נבדק בכניסה, לפני הכנסת ציוד", b: 1, c: "#1e7b34" }],
+    [{ t: "תקינות התריסים", ...H1, al: "r" }, { t: D.shutters + (D.shutters_note ? " – " + D.shutters_note : ""), b: 1, c: ok(D.shutters) ? "#1e7b34" : "#c62828" }],[{ t: "תקינות החדר והציוד", ...H1, al: "r" }, { t: D.fix, b: 1, c: ok(D.fix) ? "#1e7b34" : "#c62828" }],
+    [{ t: "ניקיון", ...H1, al: "r" }, { t: D.clean, b: 1, c: ok(D.clean) ? "#1e7b34" : "#c62828" }]], [40, 40, 40, 40]);
   if (D.faults.length) y = grid(y, [380, R - M - 380], [[{ t: "פריט לא תקין", ...H1 }, { t: "הערה", ...H1 }], ...D.faults.map(f => [{ t: f.nm, al: "r", s: 17 }, { t: f.cn, al: "r", s: 17 }])], [34, ...D.faults.map(() => 34)]);
   if (D.notes) { x.strokeStyle = LINE; const ny = y; y = wrap("הערות: " + D.notes, R - 14, y + 20, R - M - 28, 26, { s: 17 }); x.strokeRect(M, ny, R - M, y - ny); }
   y = box(y, "כללי הלינה", RULES.map(([t, d]) => `${t.replace(/^\S+\s/, "")}: ${d}`));
@@ -390,7 +398,7 @@ $("f").addEventListener("submit", e => {
     ? `✅ <b>הטופס נשמר במנגנון קבלת החדר.</b> ${data.occ.join(", ")} יקבלו עכשיו טופס לן משלהם.`
     : "✅ <b>הטופס נשמר במנגנון קבלת החדר.</b>");
 });
-wireDone(PRE, "מצורף טופס קבלת חדר חתום · אחראי חדר");
+wireDone();
 </script>
 </body>
 </html>
