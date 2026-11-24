@@ -200,7 +200,14 @@ function fromHash() {
     return JSON.parse(new TextDecoder().decode(Uint8Array.from(b, c => c.charCodeAt(0))));
   } catch (e) { return null; }
 }
-const PRE = null || fromHash();  // known details of a specific employee (null = blank form)
+function fromPhoneFile() {  // personal details of a #to=<phone> form, kept in p/ph_<phone>.json (name + role only)
+  const t = location.hash.match(/[#&]to=(\d{9,15})/); if (!t) return null;
+  try {
+    const x = new XMLHttpRequest(); x.open("GET", "p/ph_" + t[1] + ".json?" + Date.now(), false); x.send();
+    return x.status === 200 ? JSON.parse(x.responseText) : null;
+  } catch (e) { return null; }
+}
+const PRE = null || fromHash() || fromPhoneFile();  // known details of a specific employee (null = blank form)
 if (!PRE) $("recvDate").value = iso(now);
 else if (PRE.recv) $("recvDate").value = PRE.recv;  // re-sign: the date on the original paper form
 $("recvDate").max = iso(now);
