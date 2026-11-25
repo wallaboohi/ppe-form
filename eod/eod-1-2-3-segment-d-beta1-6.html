@@ -36,8 +36,8 @@
     code{background:#101b27;padding:1px 5px;border-radius:6px}
   
     :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-    .skip:focus{left:12px;top:12px;width:auto;height:auto;padding:10px 14px;background:#fff;color:#000;z-index:9999;border-radius:8px}
+    .skip{position:absolute;top:0;inset-inline-start:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .skip:focus{inset-inline-start:12px;top:12px;clip:auto;white-space:normal;width:auto;height:auto;padding:10px 14px;background:#fff;color:#000;z-index:9999;border-radius:8px}
     .hero-note{padding:12px 14px;border-radius:12px;background:#123524;border:1px solid #1f6b45;color:#d1fae5;margin-top:10px}
     .img-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
     figure.visual{margin:0;background:#142235;border:1px solid #32506d;border-radius:12px;overflow:hidden}
