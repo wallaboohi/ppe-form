@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EOD 1+2+3 מקטע D — בטא 1.0</title>
+  <style>
+    :root{--bg:#0b141d;--card:#182433;--card2:#1f2f42;--text:#eef4fb;--muted:#b7c7d8;--accent:#7dd3fc;--ok:#34d399;--bad:#f87171;--warn:#fbbf24;--line:#294056}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#0b141d,#132233);color:var(--text)}
+    .wrap{max-width:920px;margin:0 auto;padding:16px 14px 48px}
+    .card{background:rgba(24,36,51,.97);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    h1{font-size:1.55rem;margin:0 0 6px} h2{font-size:1.2rem;margin:0 0 10px} h3{font-size:1rem;margin:14px 0 8px}
+    p,li,label,small{line-height:1.55} .muted{color:var(--muted)} .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#22364b;color:var(--accent);font-size:.83rem;margin:2px 6px 2px 0}
+    .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+    input,select,button,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#101b27;color:var(--text);font-size:1rem}
+    button{cursor:pointer;background:#1d4ed8;border-color:#2b63f3;font-weight:700} button.secondary{background:#22364b;border-color:#35506f} button.good{background:#166534;border-color:#1f8a43}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    .q{padding:12px;border-radius:12px;background:var(--card2);margin:10px 0;border:1px solid #32506d}
+    .q .opts label{display:block;padding:8px 10px;margin:6px 0;border-radius:10px;background:#142235;border:1px solid transparent}
+    .q .opts input{width:auto;margin-left:8px} .q .opts label:has(input:checked){border-color:var(--accent);background:#18314a}
+    .status-ok{color:var(--ok);font-weight:700} .status-bad{color:var(--bad);font-weight:700} .status-warn{color:var(--warn);font-weight:700}
+    table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right;font-size:.93rem;vertical-align:top}
+    .toc a{color:var(--accent);text-decoration:none} .footer{font-size:.85rem;color:var(--muted)}
+    .hidden{display:none} .banner{padding:10px 12px;border-radius:12px;background:#2a2210;border:1px solid #6b5618;color:#fde68a}
+    .info{padding:10px 12px;border-radius:12px;background:#10263a;border:1px solid #2b5678;color:#dbeafe}
+    .devnote{margin-top:12px;padding:12px;border-radius:12px;background:#1a2433;border:1px dashed #4b6a88}
+    .devnote h3{margin:0 0 6px;font-size:.95rem;color:#93c5fd}
+    .devnote textarea{min-height:72px;margin-top:6px;background:#0f1926}
+    .devnote .meta{font-size:.8rem;color:var(--muted)}
+    details{background:#142235;border:1px solid #32506d;border-radius:12px;padding:10px 12px;margin:8px 0}
+    summary{cursor:pointer;font-weight:700;color:var(--accent)}
+    .src{font-size:.8rem;color:var(--muted);margin-top:6px}
+    .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+    .kpi .box{background:#142235;border:1px solid #32506d;border-radius:12px;padding:10px}
+    .kpi .n{font-size:1.3rem;font-weight:700}
+    code{background:#101b27;padding:1px 5px;border-radius:6px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="pill">בטא 1.0 להפצה</div><div class="pill">מותאם לנייד</div><div class="pill">EOD 1+2+3</div><div class="pill">עובר 70</div>
+    <h1>EOD 1+2+3 מקטע D</h1>
+    <p class="muted">קורס ומבחן בשלושה שלבים. הנבחן מבצע את שלושתם, והממשק מציג ציון לכל שלב בנפרד: <b>EOD 1</b>, <b>EOD 2</b>, <b>EOD 3</b>, וכן <b>ממוצע 1+2+3</b>. ציון עובר: <b>70</b>.</p>
+    <div class="banner">⚠️ גרסת בטא 1.0 להרצת ניסיון. תוכן הלימוד והשאלות מבוססים על IMAS 09.30 ו-T&amp;EP 09.30/01/2022 וחילוץ מקומי של נספח B; לפני שימוש כמבחן מחייב יש לבצע QA ידני מול המקורות המלאים.</div>
+    <div class="info" style="margin-top:10px">📚 לפני המבחן: קראו את חלקי הלימוד בכל שלב. הם מיועדים להכין למבחן הפנימי בקורס וגם לכסות את תחומי הליבה הרלוונטיים לרמות EOD 1-3 לפי המקורות. שאלות המבחן מסומנות במקור ובסטטוס ודאות.</div>
+    <div class="kpi">
+      <div class="box"><div class="muted">שלבים</div><div class="n">3</div></div>
+      <div class="box"><div class="muted">ציון עובר</div><div class="n">70</div></div>
+      <div class="box"><div class="muted">תצוגה</div><div class="n">לכל שלב + ממוצע</div></div>
+      <div class="box"><div class="muted">שמירה</div><div class="n">מקומי + JSON</div></div>
+    </div>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון. נשמר מקומית בדפדפן.</div><textarea id="devnote_main" placeholder="הערות כלליות לדף הראשי..."></textarea></div>
+  </div>
+
+  <div class="card" id="identify">
+    <h2>זיהוי נבחן</h2>
+    <p class="muted">הזיהוי נעשה לפי <code>?uid=...</code> בקישור או הזנה ידנית. מיפוי uid לאדם מנוהל מקומית על ידי יקיר מחוץ לקורס. הקורס אינו שולף נתונים אוטומטית ממאגר עובדים.</p>
+    <div class="grid2">
+      <div><label for="uid">מזהה uid</label><input id="uid" placeholder="יוזן מהקישור או ידנית"></div>
+      <div><label for="displayName">שם לתצוגה</label><input id="displayName" placeholder="שם הנבחן"></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><label for="phone">טלפון</label><input id="phone" placeholder="טלפון"></div>
+      <div><label for="tz">תעודת זהות</label><input id="tz" placeholder="תעודת זהות"></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div><label for="role">תפקיד</label><input id="role" placeholder="תפקיד"></div>
+      <div><label for="address">כתובת</label><input id="address" placeholder="כתובת"></div>
+    </div>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון.</div><textarea id="devnote_identify" placeholder="הערות לזיהוי נבחן..."></textarea></div>
+  </div>
+
+  <div class="card toc">
+    <h2>תוכן עניינים וציונים</h2>
+    <table>
+      <thead><tr><th>שלב</th><th>ציון</th><th>סטטוס</th><th>קישור</th></tr></thead>
+      <tbody id="tocBody"></tbody>
+    </table>
+    <div id="overallBox" style="margin-top:12px"></div>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון.</div><textarea id="devnote_toc" placeholder="הערות לתצוגת ציונים..."></textarea></div>
+  </div>
+
+  <div id="stages"></div>
+
+  <div class="card">
+    <h2>עמידה בתקן והצמדה לדרישות</h2>
+    <p class="muted">מיפוי בין דרישות הקורס, המקורות והשלבים. זהו מנגנון בקרה לבטא — לא תחליף ל-QA מלא.</p>
+    <table>
+      <thead><tr><th>דרישה</th><th>מקור/עיגון</th><th>איך נבדק בקורס</th><th>סטטוס</th></tr></thead>
+      <tbody>
+        <tr><td>ציון לכל שלב בנפרד + ממוצע 1+2+3</td><td>הנחיית יקיר 25.11.2026</td><td>מנוע ציון מציג EOD1/2/3 וממוצע</td><td class="status-ok">ממומש</td></tr>
+        <tr><td>ציון עובר 70</td><td>הנחיית יקיר 25.11.2026</td><td>PASS=70, סטטוס לכל שלב וממוצע</td><td class="status-ok">ממומש</td></tr>
+        <tr><td>EOD רמה 1 — השמדה במקום של פריטים ספציפיים שאושרו</td><td>IMAS 09.30 4.2(1)</td><td>מודול לימוד + שאלות רמה 1</td><td class="status-warn">בטא, דורש QA</td></tr>
+        <tr><td>EOD רמה 2 — הזזה/הובלה באישור כתוב מרמה 3+, פינוי מרובה</td><td>IMAS 09.30 4.2(2)</td><td>מודול לימוד + שאלות רמה 2</td><td class="status-warn">בטא, דורש QA</td></tr>
+        <tr><td>EOD רמה 3 — RSP/הרס עד 50kg NEQ, אישור לרמה 2</td><td>IMAS 09.30 4.2(3)</td><td>מודול לימוד + שאלות רמה 3</td><td class="status-warn">בטא, דורש QA</td></tr>
+        <tr><td>קטגוריות כשירות EOD</td><td>T&amp;EP 09.30/01/2022 פרק 6</td><td>מפת קטגוריות בכל שלב ובבנק השאלות</td><td class="status-warn">בטא, דורש QA</td></tr>
+        <tr><td>הערות למפתח בכל דף</td><td>הנחיית יקיר 25.11.2026</td><td>devnote בכל כרטיס/שלב</td><td class="status-ok">ממומש</td></tr>
+        <tr><td>שמירה מקומית + ייצוא</td><td>דרישת קורס</td><td>localStorage + הורדת JSON</td><td class="status-ok">ממומש</td></tr>
+        <tr><td>פרסום בענן, איסוף למאגר מקומי וסגירת קישור</td><td>הנחיית יקיר 25.11.2026</td><td>publish_exam.py / collect_exam.py + הוראות</td><td class="status-warn">מנגנון מוכן, דורש הרצה בפועל</td></tr>
+      </tbody>
+    </table>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון.</div><textarea id="devnote_compliance" placeholder="הערות לעמידה בתקן/הצמדה לדרישות..."></textarea></div>
+  </div>
+
+  <div class="card">
+    <h2>שמירה, ייצוא והגשה</h2>
+    <p class="muted">התוצאות נשמרות בדפדפן (localStorage). אפשר להוריד JSON. בפרסום בענן: הנבחן פותח קישור, מסיים, והתוצאה נשמרת/מועתקת למאגר המקומי של יקיר; לאחר מכן הקישור נסגר על ידי סקריפט האיסוף/פרסום.</p>
+    <div class="grid2">
+      <button class="good" id="saveBtn">שמור תוצאה מקומית</button>
+      <button class="secondary" id="exportBtn">הורד JSON</button>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <button class="secondary" id="submitBtn">הגש תוצאה (אם הוגדר endpoint)</button>
+      <button class="secondary" id="managerBtn">תצוגת מנהל (מקומי)</button>
+    </div>
+    <pre id="saveMsg" class="muted" style="white-space:pre-wrap;margin-top:10px"></pre>
+    <div id="managerArea" class="hidden">
+      <h3>דוח מנהל מקומי</h3>
+      <p class="muted">מציג תוצאות שנשמרו בדפדפן זה בלבד. דוח מרכזי נאסף למחשב של יקיר דרך collect_exam.py.</p>
+      <pre id="managerReport" style="white-space:pre-wrap;background:#101b27;padding:12px;border-radius:12px;overflow:auto"></pre>
+    </div>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון.</div><textarea id="devnote_save" placeholder="הערות לשמירה/הגשה..."></textarea></div>
+  </div>
+
+  <div class="card footer">
+    <div><b>מקורות:</b> IMAS 09.30 Ed.2 Am.6 (Sep 2022); T&amp;EP 09.30/01/2022 Ed.2; חילוץ מקומי Annex B <code>notes/annex-b-matrix-clean.*</code>.</div>
+    <div><b>נתיב פרויקט:</b> <code>research/eod-course/PROJECT-INDEX.md</code></div>
+    <div><b>הערה:</b> אין שליפה אוטומטית ממאגר עובדי מקטע D בתוך הקורס. זיהוי/הרשאות/איסוף תוצאות מנוהלים מקומית.</div>
+    <div class="devnote"><h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">לא משפיע על ציון.</div><textarea id="devnote_footer" placeholder="הערות כלליות לגרסת בטא 1.0..."></textarea></div>
+  </div>
+</div>
+<script>
+const PASS = 70;
+const SUBMIT_ENDPOINT = "https://ntfy.sh/4md-yvnKfkB7K8T6piSlCx8SuU2R"; // מוזרק על ידי publish_exam.py בעת פרסום, או ריק.
+const EXAM_META = {"exam_id": "eod-1-2-3-segment-d-yakir-bochbot-beta1", "uid": "yakir-bochbot", "name": "יקיר בוחבוט", "displayName": "יקיר בוחבוט", "tz": "200386480", "phone": "0587766553", "role": "לוגיסטיקה, מקטע D"};
+const STAGES = [
+  {id:'EOD1', label:'EOD 1', source:'IMAS 09.30 4.2(1); T&EP 09.30/01; Annex B level 1',
+   study:[
+     {t:'עקרון בטיחות ו-RSP', b:'פעולת EOD מתחילה בזיהוי, הערכת סיכון ובחירת Render Safe Procedure (RSP) מתאימה. אין לנחש, אין לקצר תהליכים, ופועלים לפי נהלים וסמכות.', s:'IMAS 09.30 Foreword/4.1; T&EP 09.30/01 Ch.5-6'},
+     {t:'סמכות רמה 1', b:'רמה 1 מאפשרת לאתר, לחשוף ולהשמיד במקום (in situ) בסביבה מבוקרת, פריטי מוקשים/ERW ספציפיים שהאדם הוכשר עליהם ותועד. אין לחרוג לפריטים או מצבים שאינם בהסמכה.', s:'IMAS 09.30 4.2(1)'},
+     {t:'PPE וציוד', b:'ציוד מגן וציוד עבודה נבחרים לפי הערכת סיכון, משימה ונהלים. יש לבדוק התאמה, תקינות ומגבלות.', s:'IMAS 09.30 4.1; IMAS 10.30 (הפניה כללית), T&EP קטגוריית Equipment Skills'},
+     {t:'דיווח ותיעוד', b:'יש לתעד ממצא, מיקום, מצב, סיכון, פעולה שבוצעה ותוצאה לפי נהלי דיווח. תיעוד הוא חלק מהכשירות.', s:'IMAS 09.30 4.1; T&EP קטגוריית Reporting & Data'}
+   ],
+   questions:[
+     {id:'1q1',q:'מהו העיקרון הבטוח לפתיחת טיפול בפריט EOD?',opts:['להתחיל בפירוק מיד','זיהוי, הערכת סיכון ובחירת RSP מתאימה','להעביר את הפריט לפני זיהוי','להסתמך על ניסיון אישי בלבד'],a:1,src:'IMAS 09.30 4.1',conf:'source_grounded'},
+     {id:'1q2',q:'לפי IMAS 09.30, רמה 1 מאפשרת בעיקר:',opts:['RSP לכל סוגי התחמושת','איתור, חשיפה והשמדה במקום בפריטים ספציפיים שאושרו ובהסמכה מתועדת','אישור כתוב לרמה 2','פינוי Bulk Demolition'],a:1,src:'IMAS 09.30 4.2(1)',conf:'source_grounded'},
+     {id:'1q3',q:'מפעיל רמה 1 נתקל בפריט שאינו בהכשרתו המתועדת. הפעולה הנכונה:',opts:['לטפל בו אם נראה פשוט','להסתיר אותו','לעצור, לדווח ולהעביר לרמה/סמכות מתאימה','לנסות להזיז לבדיקה'],a:2,src:'IMAS 09.30 4.1/4.2',conf:'source_grounded'},
+     {id:'1q4',q:'בחירת PPE צריכה להתבסס על:',opts:['נוחות בלבד','הערכת סיכון, משימה ונהלים','צבע ציוד','מהירות העבודה'],a:1,src:'IMAS 09.30 4.1; T&EP Equipment Skills',conf:'source_grounded'},
+     {id:'1q5',q:'תיעוד פעולה צריך לכלול לפחות:',opts:['שם בלבד','ממצא/מיקום/מצב/סיכון/פעולה/תוצאה לפי נהלים','רק תמונה','אין צורך ברמה 1'],a:1,src:'T&EP Reporting & Data; IMAS 09.30 4.1',conf:'source_grounded'},
+     {id:'1q6',q:'"להשמיד במקום" (in situ) ברמה 1 מתייחס ל:',opts:['העברה תמידית למתקן','השמדה מבוקרת במקום מתאים לפי נהלים ויכולת','אחסון לטווח ארוך','מסירה לאזרח'],a:1,src:'IMAS 09.30 4.2(1)',conf:'source_grounded'},
+     {id:'1q7',q:'אם אין ודאות בזיהוי הפריט:',opts:['מנחשים ומתקדמים','עוצרים, מגדילים שליטה/מרחק ומסלימים לפי סמכות','מטלטלים כדי לראות טוב יותר','מתעלמים'],a:1,src:'IMAS 09.30 4.1',conf:'source_grounded'},
+     {id:'1q8',q:'ציון עובר לכל שלב בקורס זה הוא:',opts:['60','65','70','80'],a:2,src:'הנחיית יקיר 25.11.2026',conf:'source_grounded'}
+   ]},
+  {id:'EOD2', label:'EOD 2', source:'IMAS 09.30 4.2(2); T&EP 09.30/01; Annex B level 2',
+   study:[
+     {t:'סמכות רמה 2', b:'רמה 2 מוסיפה על רמה 1: קביעה מתי בטוח להזיז ולהוביל פריטים ספציפיים באישור כתוב מרמה 3 ומעלה, וביצוע השמדה סימולטנית של פריטים מרובים (line/ring mains) על פריטים מוכשרים.', s:'IMAS 09.30 4.2(2)'},
+     {t:'אישור כתוב והעברה', b:'העברה/הובלה של EO אינה החלטה אוטומטית. היא דורשת שיקול, סמכות, אישור כתוב כשנדרש, ועמידה בדרישות אחסון/הובלה.', s:'IMAS 09.30 4.2(2); T&EP Storage & Transport'},
+     {t:'RSP במסגרת הסמכה', b:'תכנון RSP צריך לכלול זיהוי, סיכון, חלופות, משאבים, סמכות ותיעוד. פועלים רק בפריטים/מצבים שהוכשרו.', s:'IMAS 09.30 4.1/4.2; T&EP Practical EOD Skills'},
+     {t:'תיעוד ולקחים', b:'לאחר פעולה יש לתעד החלטות, חריגים, תוצאה ולקחים. דיווח איכותי תומך בטיחות ובבקרה.', s:'T&EP Reporting & Data / Deployment & Post Task'}
+   ],
+   questions:[
+     {id:'2q1',q:'לפי IMAS 09.30, רמה 2 יכולה לקבוע העברה/הובלה של פריטים ספציפיים כאשר:',opts:['תמיד, לפי שיקול אישי','יש אישור כתוב מרמה 3 ומעלה והפריט בהסמכה','אין צורך באישור','רק לאחר השמדה'],a:1,src:'IMAS 09.30 4.2(2)',conf:'source_grounded'},
+     {id:'2q2',q:'יכולת נוספת המוזכרת לרמה 2 היא:',opts:['RSP על כל EO עד 50kg NEQ','השמדה סימולטנית של פריטים מרובים באמצעות line/ring mains','אישור רמה 1','הסמכת רמה 3'],a:1,src:'IMAS 09.30 4.2(2)',conf:'source_grounded'},
+     {id:'2q3',q:'לפני הזזה/הובלה של EO יש לוודא:',opts:['רק שיש רכב','זיהוי, סיכון, סמכות/אישור, ונהלי אחסון/הובלה','שהפריט קטן','שהזמן קצר'],a:1,src:'IMAS 09.30 4.2(2); T&EP Storage & Transport',conf:'source_grounded'},
+     {id:'2q4',q:'תיעוד RSP טוב כולל:',opts:['רק תוצאה סופית','שיקולים, סיכונים, פעולות, סמכות ואישור לפי נהלים','שם המבצע בלבד','אין צורך בתיעוד'],a:1,src:'T&EP Reporting & Data / Practical EOD Skills',conf:'source_grounded'},
+     {id:'2q5',q:'רמה 2 פועלת על פריטים:',opts:['כל פריט בשטח','רק פריטים שהאדם הוכשר עליהם ותועד','רק מוקשים נגד אדם','רק פריטים שהושמדו בעבר'],a:1,src:'IMAS 09.30 4.2(2)',conf:'source_grounded'},
+     {id:'2q6',q:'בפינוי מרובה פריטים, שליטה וסדר פעולות חשובים כדי:',opts:['לקצר בלי תיעוד','לנהל סיכון, תיאום וביצוע בטוח','להימנע מדיווח','לאפשר גישה לא מורשית'],a:1,src:'IMAS 09.30 4.1; T&EP Management & Leadership',conf:'source_grounded'},
+     {id:'2q7',q:'אם תנאי השטח השתנו אחרי הערכת הסיכון הראשונית:',opts:['ממשיכים לפי התוכנית הקודמת','עוצרים, מעריכים מחדש ומעדכנים החלטה/אישור לפי סמכות','מאיצים','מבצעים ללא דיווח'],a:1,src:'IMAS 09.30 4.1',conf:'source_grounded'},
+     {id:'2q8',q:'מי נותן אישור כתוב לרמה 2 להעברת פריט (כמתואר ב-IMAS)?',opts:['כל נבחן','רמה 3 ומעלה','רמה 1','אין צורך באישור'],a:1,src:'IMAS 09.30 4.2(2)',conf:'source_grounded'}
+   ]},
+  {id:'EOD3', label:'EOD 3', source:'IMAS 09.30 4.2(3); T&EP 09.30/01; Annex B level 3',
+   study:[
+     {t:'סמכות רמה 3', b:'רמה 3 מוסיפה יכולת לבצע RSP והרס עד 50kg NEQ על מגוון רחב של EO שהאדם הוכשר עליו. רמה 3 גם יכולה לאשר בכתב לרמה 2 לבצע משימות/העברות בהתאם לסמכות.', s:'IMAS 09.30 4.2(3)'},
+     {t:'ניהול אירוע מורכב', b:'אירוע מורכב דורש הערכת סיכון, ניהול משאבים, תיאום, סמכויות, תיעוד החלטות ותקשורת. ההחלטה חייבת להיות ניתנת להגנה מקצועית.', s:'T&EP Management & Leadership; IMAS 09.30 4.1'},
+     {t:'RSP מורכב ותיעוד שיקולים', b:'במצבים מורכבים יש לתעד חלופות, סיכונים, הנחות, מגבלות, אישורים ותוצאה. תיעוד שיקולים הוא חלק מאיכות ובטיחות.', s:'IMAS 09.30 4.1; T&EP Practical EOD Skills / Reporting & Data'},
+     {t:'פיקוח ואיכות', b:'רמה 3 עשויה להיות מעורבת בהדרכה, פיקוח, בקרת איכות ושיפור תהליכים. על הארגון וה-NMAA לוודא כשירות, הסמכה ובקרה.', s:'IMAS 09.30 4.3-4.5; T&EP Ch.8-9'}
+   ],
+   questions:[
+     {id:'3q1',q:'לפי IMAS 09.30, רמה 3 מוסמכת לבצע RSP והרס על מגוון EO שהוכשר עליו עד:',opts:['5kg NEQ','20kg NEQ','50kg NEQ','אין מגבלה'],a:2,src:'IMAS 09.30 4.2(3)',conf:'source_grounded'},
+     {id:'3q2',q:'רמה 3 יכולה גם:',opts:['לבטל את כל הנהלים','לאשר בכתב לרמה 2 לבצע משימות/החלטות בטווח סמכותה','לעבוד ללא תיעוד','להחליף NMAA'],a:1,src:'IMAS 09.30 4.2(3)',conf:'source_grounded'},
+     {id:'3q3',q:'ב-RSP מורכב, תיעוד השיקולים צריך לכלול:',opts:['רק תמונה','חלופות, סיכונים, הנחות, סמכות/אישור ותוצאה','רק שם צוות','אין צורך'],a:1,src:'IMAS 09.30 4.1; T&EP Reporting & Data',conf:'source_grounded'},
+     {id:'3q4',q:'ניהול אירוע EOD מורכב דורש:',opts:['פעולה מהירה ללא תיאום','הערכת סיכון, משאבים, סמכויות, תיאום ותיעוד','העברת אחריות לעוברי אורח','הימנעות מדיווח'],a:1,src:'T&EP Management & Leadership',conf:'source_grounded'},
+     {id:'3q5',q:'כשיש חריגה/אירוע חריג, יש לפעול לפי:',opts:['הסתרה','דיווח, שליטה, והפעלת סמכות/נהלים','המשך כרגיל','מחיקת נתונים'],a:1,src:'IMAS 09.30 4.1; T&EP Quality/Responsibilities',conf:'source_grounded'},
+     {id:'3q6',q:'כשירות EOD צריכה להיות:',opts:['לא מתועדת','מוכשרת, מתועדת, מוסמכת ומבוקרת לפי דרישות NMAA/ארגון','מבוססת שמועה','חד פעמית ללא רענון'],a:1,src:'IMAS 09.30 4.2-4.4',conf:'source_grounded'},
+     {id:'3q7',q:'החלטה מקצועית ברמה 3 צריכה להיות:',opts:['בלתי מוסברת','מבוססת מידע, סיכון, סמכות, נהלים ויכולת מתועדת','מבוססת לחץ זמן בלבד','ללא תיעוד'],a:1,src:'IMAS 09.30 4.1; T&EP 5-8',conf:'source_grounded'},
+     {id:'3q8',q:'ממוצע הקורס מחושב כ:',opts:['ציון אחרון','(EOD1+EOD2+EOD3)/3','הגבוה מבין השלבים','סכום בלבד'],a:1,src:'הנחיית יקיר 25.11.2026',conf:'source_grounded'}
+   ]}
+];
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+function devKey(id){return 'eod_v1_dev_'+id}
+function loadDev(id){return localStorage.getItem(devKey(id))||''}
+function saveDev(id,v){localStorage.setItem(devKey(id),v||'')}
+function devBlock(id,label,ph){
+  const d=document.createElement('div'); d.className='devnote';
+  d.innerHTML=`<h3>🛠️ הערות למפתח (Beta — הרצת ניסיון)</h3><div class="meta">אזור: ${label}. לא משפיע על ציון. נשמר מקומית בדפדפן.</div>`;
+  const ta=document.createElement('textarea'); ta.id='devnote_'+id; ta.placeholder=ph||'הערה למפתח...'; ta.value=loadDev(id);
+  ta.addEventListener('input',()=>saveDev(id,ta.value)); d.appendChild(ta); return d;
+}
+function stageScore(id){
+  const st=STAGES.find(s=>s.id===id); let correct=0,answered=0;
+  st.questions.forEach(q=>{const el=document.querySelector(`input[name="${q.id}"]:checked`); if(el){answered++; if(Number(el.value)===q.a) correct++;}});
+  return {id,score:Math.round(correct/st.questions.length*100),correct,total:st.questions.length,answered};
+}
+function allScores(){const scores=STAGES.map(s=>stageScore(s.id)); const avg=Math.round(scores.reduce((a,b)=>a+b.score,0)/scores.length); return {scores,avg,overallPass:scores.every(s=>s.score>=PASS)&&avg>=PASS};}
+function render(){
+  const root=$('stages'); root.innerHTML='';
+  STAGES.forEach((st,idx)=>{
+    const card=document.createElement('div'); card.className='card'; card.id=st.id;
+    card.innerHTML=`<h2>${idx+1}. ${st.label} — לימוד ומבחן</h2><p class="muted">${st.source}</p>`;
+    const study=document.createElement('details'); study.open=true; study.innerHTML=`<summary>📚 חומר לימוד לפני המבחן — ${st.label}</summary>`;
+    st.study.forEach(m=>{const d=document.createElement('div'); d.style.margin='10px 0'; d.innerHTML=`<h3>${m.t}</h3><div>${m.b}</div><div class="src">מקור: ${m.s}</div>`; study.appendChild(d);});
+    study.appendChild(devBlock(st.id+'_study','חומר לימוד '+st.label,'הערה על דיוק/חוסר/מקור בחומר הלימוד...'));
+    card.appendChild(study);
+    const exam=document.createElement('details'); exam.open=true; exam.innerHTML=`<summary>📝 מבחן ${st.label} (${st.questions.length} שאלות)</summary>`;
+    st.questions.forEach((q,qi)=>{const qd=document.createElement('div'); qd.className='q'; qd.innerHTML=`<div><b>שאלה ${qi+1}.</b> ${q.q}</div><div class="opts">${q.opts.map((o,oi)=>`<label><input type="radio" name="${q.id}" value="${oi}"> ${o}</label>`).join('')}</div><div class="src">מקור: ${q.src} · ודאות: ${q.conf}</div>`; exam.appendChild(qd);});
+    const btn=document.createElement('button'); btn.textContent=`חשב ציון ${st.label}`; btn.style.marginTop='10px';
+    btn.onclick=()=>{update(); const sc=stageScore(st.id); $('saveMsg').textContent=`${st.label}: ${sc.score} (${sc.correct}/${sc.total}) — ${sc.score>=PASS?'עבר':'לא עבר'}`;};
+    exam.appendChild(btn);
+    exam.appendChild(devBlock(st.id+'_exam','מבחן '+st.label,'הערה על שאלה/ניסוח/מקור...'));
+    card.appendChild(exam);
+    card.appendChild(devBlock(st.id,'שלב '+st.label,'הערה כללית לשלב...'));
+    root.appendChild(card);
+  });
+}
+function update(){
+  const r=allScores();
+  $('tocBody').innerHTML=r.scores.map(s=>`<tr><td>${s.id}</td><td>${s.score}</td><td class="${s.score>=PASS?'status-ok':'status-bad'}">${s.score>=PASS?'עבר':'לא עבר'}</td><td><a href="#${s.id}">לשלב</a></td></tr>`).join('')+
+    `<tr><td><b>ממוצע 1+2+3</b></td><td><b>${r.avg}</b></td><td class="${r.avg>=PASS?'status-ok':'status-bad'}">${r.avg>=PASS?'עבר':'לא עבר'}</td><td>-</td></tr>`;
+  $('overallBox').innerHTML=`<div class="pill">ממוצע: ${r.avg}</div><div class="pill">סטטוס כללי: <span class="${r.overallPass?'status-ok':'status-bad'}">${r.overallPass?'עבר':'לא עבר'}</span></div><div class="muted" style="margin-top:8px">כל שלב חייב להיות >= ${PASS}. הממוצע מוצג תמיד.</div>`;
+  return r;
+}
+function person(){return {uid:$('uid').value.trim(), name:$('displayName').value.trim(), phone:$('phone').value.trim(), tz:$('tz').value.trim(), role:$('role').value.trim(), address:$('address').value.trim()};}
+function buildResult(){
+  const r=update(); const p=person();
+  return {course_name:'EOD 1+2+3 מקטע D',version:'1.0-beta',timestamp:new Date().toISOString(),person:p,pass_score:PASS,
+    stages:r.scores.map(s=>({id:s.id,score:s.score,correct:s.correct,total:s.total,pass:s.score>=PASS})),
+    average_123:r.avg,overall_pass:r.overallPass,submit_endpoint_configured:!!SUBMIT_ENDPOINT,
+    sources:['IMAS 09.30 Ed.2 Am.6 Sep 2022','T&EP 09.30/01/2022 Ed.2','Annex B clean local extract'],
+    qa_status:'beta-qa-required'};
+}
+function download(name,text){const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'application/json;charset=utf-8'})); a.download=name; a.click(); URL.revokeObjectURL(a.href);}
+function loadLocal(){try{return JSON.parse(localStorage.getItem('eod_v1_results')||'[]')}catch{return []}}
+function saveLocal(arr){localStorage.setItem('eod_v1_results',JSON.stringify(arr))}
+async function submitResult(){
+  const r=buildResult();
+  const safe=(r.person.name||r.person.uid||'anonymous').replace(/[^\w\u0590-\u05FF -]/g,'_');
+  download(`EOD-1-2-3-${safe}-${Date.now()}.json`, JSON.stringify(r,null,2));
+  if(!SUBMIT_ENDPOINT){$('saveMsg').textContent='הקובץ הורד. לא הוגדר endpoint להגשה אוטומטית בענן בקובץ זה. העבר את ה-JSON למחשב של יקיר או השתמש ב-publish/collect.'; return;}
+  $('saveMsg').textContent='שולח תוצאה...';
+  try{
+    const resp=await fetch(SUBMIT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(r)});
+    $('saveMsg').textContent=resp.ok?'התוצאה נשלחה ונשמרה גם כקובץ מקומי. אם זה קישור זמני, הוא ייסגר לאחר האיסוף.':'השליחה נכשלה ('+resp.status+'). הקובץ הורד מקומית — העבר אותו ליקיר.';
+  }catch(e){$('saveMsg').textContent='השליחה נכשלה ('+e+'). הקובץ הורד מקומית — העבר אותו ליקיר.';}
+}
+$('saveBtn').onclick=()=>{const r=buildResult(); const arr=loadLocal(); arr.push(r); saveLocal(arr); $('saveMsg').textContent='נשמר מקומית.\n'+JSON.stringify(r,null,2);};
+$('exportBtn').onclick=()=>{const r=buildResult(); const safe=(r.person.name||r.person.uid||'anonymous').replace(/[^\w\u0590-\u05FF -]/g,'_'); download(`EOD-1-2-3-${safe}-${Date.now()}.json`,JSON.stringify(r,null,2)); $('saveMsg').textContent='הורד קובץ JSON.';};
+$('submitBtn').onclick=submitResult;
+$('managerBtn').onclick=()=>{$('managerArea').classList.toggle('hidden'); const arr=loadLocal(); $('managerReport').textContent=arr.length?JSON.stringify(arr,null,2):'אין תוצאות בדפדפן זה.';};
+function initDev(){['main','identify','toc','compliance','save','footer'].forEach(id=>{const ta=$('devnote_'+id); if(ta){ta.value=loadDev(id); ta.addEventListener('input',()=>saveDev(id,ta.value));}})}
+function initFromUrl(){
+  const meta = (typeof EXAM_META !== 'undefined' && EXAM_META) ? EXAM_META : {};
+  const map = {uid:['uid','puid'], displayName:['name'], phone:['phone'], tz:['tz','id_number'], role:['role'], address:['address','addr']};
+  for(const [id,keys] of Object.entries(map)){
+    let v = '';
+    for(const k of keys){ if(params.get(k)) { v = params.get(k); break; } }
+    if(!v && meta[id]) v = meta[id];
+    if(!v && id==='uid' && meta.exam_id) v = meta.uid || '';
+    if(v && $(id)) $(id).value = v;
+  }
+}
+render(); update(); initFromUrl(); initDev();
+</script>
+</body>
+</html>
