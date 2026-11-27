@@ -270,8 +270,8 @@ $("lcount").textContent = LODGERS.length;
 $("lodgers").innerHTML = LODGERS.length ? LODGERS.map((n, i) => `<p>${i + 1}. ${n}</p>`).join("") : "<p>אין לנים בסקר לשבוע הזה</p>";
 $("sites").innerHTML = (PRE.sites || []).map(s => `<option value="${s}">`).join("");
 // lodgers first in the managers list, then the rest of the attendance list
-// owner 27.11: the managers list = ONLY those who voted in the lodging poll (and are on the company file's roster); no poll voters at all -> the whole roster, so the form never ends up empty
-const MGRS = LODGERS.length ? LODGERS.filter(n => PEOPLE.includes(n)) : PEOPLE;
+// owner 27.11 (restated): the managers list = the WHOLE section roster from the company file, regardless of the lodging poll
+const MGRS = PEOPLE;
 
 $("nrooms").innerHTML = `<option value="">— בחר —</option>` + Array.from({ length: 15 }, (_, i) => `<option>${i + 1}</option>`).join("");
 function roomBlock(i, pre) {
@@ -281,10 +281,10 @@ function roomBlock(i, pre) {
       <div><label>מתחם לינה <span class="req">*</span></label><input class="site" list="sites" placeholder="בחר או כתוב"></div>
       <div><label>מספר חדר <span class="req">*</span></label><input class="room" placeholder="למשל 12"></div>
       <div><label>מיקום החדר <span class="req">*</span></label><input class="loc" placeholder="קומה / אגף / ליד…"></div>
-      <div><label>אחראי החדר <span class="req">*</span></label><select class="mgr"><option value="">— בחר עובד מהרשימה —</option>${MGRS.map(n => `<option>${n}${LODGERS.includes(n) ? "" : " (לא בסקר)"}</option>`).join("")}</select></div>
+      <div><label>אחראי החדר <span class="req">*</span></label><select class="mgr"><option value="">— בחר עובד מהרשימה —</option>${MGRS.map(n => `<option>${n}</option>`).join("")}</select></div>
     </div>`;
   if (pre) { for (const k of ["site", "room", "loc"]) d.querySelector("." + k).value = pre[k] || "";
-    if (pre.mgr) d.querySelector(".mgr").value = MGRS.includes(pre.mgr) && !LODGERS.includes(pre.mgr) ? pre.mgr + " (לא בסקר)" : pre.mgr; }
+    if (pre.mgr) d.querySelector(".mgr").value = pre.mgr; }
   return d;
 }
 $("nrooms").addEventListener("change", () => {
