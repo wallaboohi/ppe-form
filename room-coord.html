@@ -270,7 +270,8 @@ $("lcount").textContent = LODGERS.length;
 $("lodgers").innerHTML = LODGERS.length ? LODGERS.map((n, i) => `<p>${i + 1}. ${n}</p>`).join("") : "<p>אין לנים בסקר לשבוע הזה</p>";
 $("sites").innerHTML = (PRE.sites || []).map(s => `<option value="${s}">`).join("");
 // lodgers first in the managers list, then the rest of the attendance list
-const MGRS = LODGERS.filter(n => PEOPLE.includes(n)).concat(PEOPLE.filter(n => !LODGERS.includes(n)));
+// owner 27.11: the managers list = ONLY those who voted in the lodging poll (and are on the company file's roster); no poll voters at all -> the whole roster, so the form never ends up empty
+const MGRS = LODGERS.length ? LODGERS.filter(n => PEOPLE.includes(n)) : PEOPLE;
 
 $("nrooms").innerHTML = `<option value="">— בחר —</option>` + Array.from({ length: 15 }, (_, i) => `<option>${i + 1}</option>`).join("");
 function roomBlock(i, pre) {
